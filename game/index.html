@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigil Clash — Duel of the Three Lanes</title>
+<link rel="stylesheet" href="css/table.css">
+</head>
+<body>
+<div id="felt">
+  <header id="topbar">
+    <div id="brand">SIGIL CLASH</div>
+    <div id="roundBadge">ROUND 1 / 6</div>
+    <div id="log" aria-live="polite"></div>
+  </header>
+
+  <!-- Opponent row -->
+  <section id="rivalRow" class="sideRow">
+    <div class="portrait" id="rivalPortrait">VEX</div>
+    <div class="lifeBox">
+      <div class="lifeLabel">VEX · THE HOLLOW DEALER</div>
+      <div class="lifeBar"><div id="rivalLifeFill" class="lifeFill"></div></div>
+      <div class="lifeNum"><span id="rivalLife">20</span> ❤ LIFE</div>
+    </div>
+    <div id="rivalTell" class="tell">Vex is watching…</div>
+    <div id="rivalHand" class="miniHand"></div>
+  </section>
+
+  <!-- Lanes -->
+  <section id="lanes">
+    <div class="lane" data-lane="0">
+      <div class="laneName">I · EMBER GATE</div>
+      <div class="laneSlots">
+        <div class="slot rivalSlot" data-lane="0"></div>
+        <div class="laneVs">VS</div>
+        <div class="slot ownSlot" data-lane="0"></div>
+      </div>
+      <div class="laneResult" data-lane="0"></div>
+    </div>
+    <div class="lane" data-lane="1">
+      <div class="laneName">II · TIDE GATE</div>
+      <div class="laneSlots">
+        <div class="slot rivalSlot" data-lane="1"></div>
+        <div class="laneVs">VS</div>
+        <div class="slot ownSlot" data-lane="1"></div>
+      </div>
+      <div class="laneResult" data-lane="1"></div>
+    </div>
+    <div class="lane" data-lane="2">
+      <div class="laneName">III · GALE GATE</div>
+      <div class="laneSlots">
+        <div class="slot rivalSlot" data-lane="2"></div>
+        <div class="laneVs">VS</div>
+        <div class="slot ownSlot" data-lane="2"></div>
+      </div>
+      <div class="laneResult" data-lane="2"></div>
+    </div>
+  </section>
+
+  <div id="comboBanner"></div>
+
+  <!-- Player row -->
+  <section id="ownRow" class="sideRow">
+    <div class="portrait" id="ownPortrait">YOU</div>
+    <div class="lifeBox">
+      <div class="lifeLabel">WARDEN OF THE SPIRE</div>
+      <div class="lifeBar"><div id="ownLifeFill" class="lifeFill"></div></div>
+      <div class="lifeNum"><span id="ownLife">20</span> ❤ LIFE</div>
+    </div>
+    <div id="scoreBox">
+      <div class="scoreLine">LANES WON <b id="lanesWon">0</b></div>
+      <div class="scoreLine">DAMAGE DEALT <b id="dmgDealt">0</b></div>
+      <div class="scoreLine">COMBOS <b id="combosMade">0</b></div>
+    </div>
+  </section>
+
+  <section id="handZone">
+    <div id="handLabel">YOUR HAND — click a card, then click a lane (keys 1–5 pick a card, 1–3 drop it)</div>
+    <div id="hand"></div>
+  </section>
+
+  <div id="controls">
+    <button id="revealBtn" disabled>⚔ REVEAL THE LANES</button>
+    <button id="resetBtn">↻ NEW DUEL</button>
+    <button id="helpBtn">? HOW TO PLAY</button>
+  </div>
+
+  <!-- Title overlay -->
+  <div id="titleScreen" class="overlay">
+    <div class="titleCard">
+      <div class="titleKicker">AN ORIGINAL CARD DUEL</div>
+      <h1>SIGIL<br>CLASH</h1>
+      <div class="titleSub">Duel of the Three Lanes</div>
+      <p class="titleRules">Three lanes. Five cards. One rival who telegraphs every move.<br>
+      Play a card into each lane — suits beat suits, combos multiply power,<br>
+      and the lane winner strikes life straight from the loser.</p>
+      <div class="suitLegend">
+        <span class="lg ember">🔥 EMBER beats Gale</span>
+        <span class="lg gale">🍃 GALE beats Tide</span>
+        <span class="lg tide">💧 TIDE beats Ember</span>
+        <span class="lg stone">🪨 STONE fears nothing</span>
+      </div>
+      <button id="startBtn">▶ BEGIN THE DUEL</button>
+      <div class="titleFoot">You 20 ❤ · Vex 20 ❤ · 6 rounds · highest life takes the Spire</div>
+    </div>
+  </div>
+
+  <!-- Help overlay -->
+  <div id="helpScreen" class="overlay hidden">
+    <div class="titleCard helpCard">
+      <h2>HOW TO PLAY</h2>
+      <ul>
+        <li>Each round you draw up to <b>5 cards</b>. Play <b>one card into each of the 3 lanes</b>.</li>
+        <li>A card's <b>power = its value</b>. <b>+3</b> when its suit beats the rival suit in that lane.</li>
+        <li><b>Ember &gt; Gale &gt; Tide &gt; Ember.</b> Stone beats nothing — but no suit beats Stone, and Stone always adds <b>+1</b>.</li>
+        <li>Combos across your 3 lanes: <b>same suit (Sigil Surge) +3</b> each · <b>run of 3 values (Harmony) +2</b> each · <b>a pair +1</b> each.</li>
+        <li>Win a lane: deal damage equal to the power gap (min 1). Lose a lane: take it instead. Tie: nothing.</li>
+        <li>Read Vex: his <b>tell</b> names the lane he strengthens and his mood (Bold / Patient / Cunning) before you commit.</li>
+        <li>Life hits 0 and the duel ends. After round 6, the higher life wins.</li>
+      </ul>
+      <button id="closeHelpBtn">GOT IT — BACK TO THE TABLE</button>
+    </div>
+  </div>
+
+  <!-- End overlay -->
+  <div id="endScreen" class="overlay hidden">
+    <div class="titleCard">
+      <div id="endKicker" class="titleKicker"></div>
+      <h1 id="endTitle">VICTORY</h1>
+      <div id="endSub" class="titleSub"></div>
+      <p id="endStats" class="titleRules"></p>
+      <button id="againBtn">↻ DUEL AGAIN</button>
+    </div>
+  </div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
